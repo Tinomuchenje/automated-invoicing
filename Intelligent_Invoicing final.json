@@ -1,0 +1,716 @@
+{
+  "name": "Intelligent Invoicing",
+  "nodes": [
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "X-n8n-Signature",
+                "value": "EvtIS^EBVISeie6svB@6ev"
+              }
+            ]
+          }
+        }
+      },
+      "id": "cc73722d-313a-408f-9c28-1d8f49ecd281",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1900,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ee2bcd57-3b4c-43f9-b4b7-3a25687b9a68",
+              "name": "query",
+              "value": "={{ $json.body.query }}",
+              "type": "string"
+            },
+            {
+              "id": "63f23e51-af2b-47c4-a288-5abaf9b6c357",
+              "name": "user_id",
+              "value": "={{ $json.body.user_id }}",
+              "type": "string"
+            },
+            {
+              "id": "b97a3670-8a87-481b-8695-db44624be7d8",
+              "name": "request_id",
+              "value": "={{ $json.body.request_id }}",
+              "type": "string"
+            },
+            {
+              "id": "7d3fa06d-08f7-4517-b9c5-3c46ff476f55",
+              "name": "session_id",
+              "value": "={{ $json.body.session_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3cce32be-c483-4dac-81dc-9e50ab257975",
+      "name": "Prep Input Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        920,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b5eaa2a2-a6bc-40ab-af5e-baa8a5dda1a7",
+              "name": "success",
+              "value": "=true",
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "87160f27-2bb2-463f-9ef9-a7b3fe219c97",
+      "name": "Prep Output Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1660,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{$('Prep Input Fields').item.json.session_id}}",
+        "tableName": "messages",
+        "contextWindowLength": 10
+      },
+      "id": "e3ffb265-a7eb-4385-ac38-53b969c7fe9f",
+      "name": "Postgres Chat Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        1320,
+        480
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "smRmO2vJupEULz8e",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "d9fec84b-86f0-4230-9fd4-c1cb392ff8b5",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "5b3b9488-8c31-4d7a-8068-c4c1640c64b3",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        660,
+        200
+      ],
+      "webhookId": "d9fec84b-86f0-4230-9fd4-c1cb392ff8b5",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "BMH0MDmEAUMt4UYD",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Agent Node Sample Agent\n\nAuthor: [Cole Medin](https://www.youtube.com/@ColeMedin)\n\nThis is a sample n8n workflow that demonstrates the minimal required components to build an agent for the oTTomator Live Agent Studio using the \"Agent\" node in n8n. The \"Agent\" node manages conversation history itself and is compatible with the Live Agent Studio.\n\n## Core Components\n\n1. **Webhook Endpoint**\n   - Accepts POST requests with authentication\n   - Processes incoming queries with user and session information\n   - Provides secure communication via header authentication\n\n2. **Input Processing**\n   - Extracts key fields from incoming requests:\n     - query: The user's question or command\n     - user_id: Unique identifier for the user\n     - request_id: Request tracking ID\n     - session_id: Current session identifier\n\n3. **Database Integration**\n   - Uses Supabase for message storage\n   - Records both user messages and AI responses\n   - Maintains conversation history with metadata\n\n4. **Response Handling**\n   - Structured response format for consistency\n   - Includes success/failure status\n   - Returns formatted responses via webhook",
+        "height": 763.4375,
+        "width": 589.875,
+        "color": 6
+      },
+      "id": "f8295d37-1911-4969-b101-41bae9b0a43c",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -220,
+        -260
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Add your own agent tools and feel free to use any provider and LLM.",
+        "height": 100.31395348837148,
+        "width": 422.59302325581405,
+        "color": 6
+      },
+      "id": "42068a16-713f-4aa1-afa0-474d04c8fecf",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1700,
+        1080
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.1,
+      "position": [
+        1200,
+        460
+      ],
+      "id": "b7d7a86d-b13e-4331-b6d8-b18b543607ad",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "inDluYDDq8MSiVOp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "invoice_line_items",
+          "mode": "list",
+          "cachedResultName": "invoice_line_items"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.5,
+      "position": [
+        1460,
+        480
+      ],
+      "id": "941b0670-df45-467c-a186-8d58d0430ad0",
+      "name": "Get Line Items From Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "smRmO2vJupEULz8e",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "invoices",
+          "mode": "list",
+          "cachedResultName": "invoices"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.5,
+      "position": [
+        1620,
+        480
+      ],
+      "id": "f6739a21-1a99-49c7-8319-37db04c76fe9",
+      "name": "Get Invoices from Database",
+      "credentials": {
+        "postgres": {
+          "id": "smRmO2vJupEULz8e",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "text": "You are a specialized invoice processing assistant. Your task is to extract and structure information from invoice images into a consistent JSON format that will be used to create database records.\n\nREQUIRED OUTPUT FORMAT:\nYou must return a single JSON object with two main sections:\n1. invoice_details: containing the main invoice information\n2. line_items: an array of items listed on the invoice\n\nFormat your response EXACTLY as follows:\n{\n    \"invoice_details\": {\n        \"invoice_number\": \"string\",\n        \"amount\": number,\n        \"status\": \"pending\",\n        \"address\": \"string\",\n        \"issue_date\": \"YYYY-MM-DD\",\n        \"due_date\": \"YYYY-MM-DD\"\n    },\n    \"line_items\": [\n        {\n            \"item_description\": \"string\",\n            \"quantity\": number,\n            \"unit_price\": number,\n            \"amount\": number\n        }\n    ]\n}\n\nEXTRACTION GUIDELINES:\n\n1. INVOICE NUMBERS:\n- Look for \"Invoice #\", \"Invoice Number\", or similar labels\n- If no explicit invoice number, look for any unique identifier\n- Format should be preserved exactly as shown on invoice\n\n2. AMOUNTS:\n- Extract all monetary values as decimal numbers\n- Do not include currency symbols in the JSON\n- Ensure line item amounts are calculated as (quantity × unit_price)\n- Verify that sum of line items matches total invoice amount\n\n3. ADDRESSES:\n- Include complete address as shown on invoice\n- Maintain original formatting\n- Include any business names as part of address\n\n4. LINE ITEMS:\n- Extract every distinct item listed\n- Capture full item descriptions\n- Convert all quantities to decimal numbers\n- Extract unit prices if shown\n- Calculate amount if not explicitly stated\n\n5. DATES:\n- Convert all dates to YYYY-MM-DD format\n- If due date is not explicit, set as 30 days from issue date\n- Set status as \"pending\" for all new extractions\n\nVALIDATION RULES:\n1. All monetary values must be positive numbers\n2. All quantities must be greater than zero\n3. Line item amounts must equal (quantity × unit_price)\n4. Sum of line item amounts should match total invoice amount\n5. Invoice number must not be empty\n6. Address must not be empty\n\nERROR HANDLING:\n- If a required field cannot be found, use null\n- If calculations don't match, include a \"calculation_error\" flag\n- If dates are ambiguous, choose most likely interpretation and note it\n\nEXAMPLE RESPONSE:\n{\n    \"invoice_details\": {\n        \"invoice_number\": \"INV-2024-001\",\n        \"amount\": 2500.00,\n        \"status\": \"pending\",\n        \"address\": \"123 Business Ave, Suite 100, Boston, MA 02108\",\n        \"issue_date\": \"2024-01-15\",\n        \"due_date\": \"2024-02-14\"\n    },\n    \"line_items\": [\n        {\n            \"item_description\": \"Website Development - Homepage\",\n            \"quantity\": 1.00,\n            \"unit_price\": 1500.00,\n            \"amount\": 1500.00\n        },\n        {\n            \"item_description\": \"UI/UX Design Services\",\n            \"quantity\": 10.00,\n            \"unit_price\": 100.00,\n            \"amount\": 1000.00\n        }\n    ]\n}\n\nRemember:\n1. Always verify calculations before returning results\n2. Maintain consistent decimal places for monetary values\n3. Ensure all required fields are present\n4. Return only the JSON object, no additional explanations\n5. If multiple interpretations are possible, choose the most likely and note it in a \"notes\" field",
+        "inputType": "base64",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1240,
+        -220
+      ],
+      "id": "2484c982-88bd-4f91-ad7b-db86d3541208",
+      "name": "OpenAI",
+      "alwaysOutputData": true,
+      "executeOnce": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "inDluYDDq8MSiVOp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('GetImages Trigger').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        960,
+        -220
+      ],
+      "id": "6ca22113-e78f-48dd-8400-aa38940a77b1",
+      "name": "Google Drive",
+      "executeOnce": true,
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleApi": {
+          "id": "tG2oInyOui1Uugha",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "authentication": "serviceAccount",
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1ko9GpI_ycZwq7vRQWbhWKlxLDXhuzygx",
+          "mode": "list",
+          "cachedResultName": "Intelinvoices",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1ko9GpI_ycZwq7vRQWbhWKlxLDXhuzygx"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        640,
+        -220
+      ],
+      "id": "5c68822f-7d7d-4825-b1dc-b3982d8dd3eb",
+      "name": "GetImages Trigger",
+      "credentials": {
+        "googleApi": {
+          "id": "tG2oInyOui1Uugha",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "36482bde-26a3-4865-b96e-282340e1d10a",
+              "name": "query",
+              "value": "={{ $json.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1460,
+        -220
+      ],
+      "id": "76e2243a-c203-4c93-9a5f-e88dd38117c2",
+      "name": "Edit Fields",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.query }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are an Invoice Processing Agent responsible for saving extracted invoice information to a database. Your primary role is to process JSON-formatted invoice data and prepare it for database insertion. You handle both invoice details and their associated line items.\n\nDATABASE STRUCTURE:\n1. Invoices Table:\n   - id (auto-generated)\n \n   - amount (numeric(10,2))\n   - status (text)\n   - created_at (timestamp with timezone)\n   - updated_at (timestamp with timezone)\n   - invoice_number (text)\n   - address (text)\n\n2. Invoice Line Items Table:\n   - id (auto-generated)\n   - invoice_number (text, foreign key)\n   - item_description (text)\n   - quantity (decimal(10,2))\n   - unit_price (decimal(10,2))\n   - amount (decimal(10,2))\n   - created_at (timestamp with timezone)\n   - updated_at (timestamp with timezone)\n\nYOUR RESPONSIBILITIES:\n\n1. Data Validation:\n   - Verify all required fields are present\n   - Ensure numerical values are positive and properly formatted\n   - Validate dates are in correct format\n   - Confirm line item amounts match their quantity × unit_price\n   - Verify total invoice amount matches sum of line items\n\n2. Data Transformation:\n   - Format all monetary values to 2 decimal places\n   - Ensure dates are in ISO format\n   - Standardize status values to: 'pending', 'paid', or 'overdue'\n   - Clean and standardize address formatting\n\n3. Database Operations:\n   - Prepare SQL statements for both invoice and line items\n   - Maintain referential integrity between tables\n   - Handle potential duplicates by invoice number\n   - Ensure atomic transactions (all or nothing saves)\n\n4. Error Handling:\n   - Identify and report validation errors\n   - Handle missing or malformed data gracefully\n   - Provide clear error messages for failed operations\n   - Suggest corrections when possible\n\nRESPONSE FORMAT:\nWhen processing a request, respond with:\n1. Confirmation of successful validation\n2. SQL statements for database insertion\n3. Any warnings or notices about the data\n4. Suggested improvements if applicable\n\nEXAMPLES OF VALID RESPONSES:\n\nFor successful processing:\n```\nValidation Successful\n- All required fields present\n- Calculations verified\n- Dates properly formatted\n\nSQL Statements:\n[INSERT statements for invoices and line items]\n\nProcessing Complete:\n- Invoice record created\n- 3 line items processed\n- Total amount verified: Amount\n```\n\nFor issues:\n```\nValidation Warning:\n- Line item amounts don't sum to invoice total\n- Date format needs standardization\n\nSuggested Corrections:\n[List of specific corrections needed]\n\nPlease review and resubmit.\n```\n\nIMPORTANT GUIDELINES:\n1. Always verify calculations before processing\n2. Maintain data integrity at all times\n3. Never skip validation steps\n4. Report any discrepancies immediately\n5. Keep accurate audit trails\n6. Handle all monetary values with precision\n7. Preserve original invoice numbers\n8. Maintain proper foreign key relationships\n\nRemember: You are the last line of defense before data enters the database. Accuracy and consistency are your top priorities.\n\nYou have tools for executing the sql which are Add Invoice Details and\nAdd Invoice Details tool"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1740,
+        -220
+      ],
+      "id": "a9b171a5-8fb4-4b3b-ad60-4c67f6f0bfe5",
+      "name": "Invoice Details Processing Agent",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Add invoice details to the database in Postgres",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "invoices",
+          "mode": "list",
+          "cachedResultName": "invoices"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "amount": "={{ JSON.parse($json[\"query\"]).invoice_details.amount }}",
+            "status": "={{ JSON.parse($json[\"query\"]).invoice_details.status }}",
+            "invoice_number": "={{ JSON.parse($json[\"query\"]).invoice_details.invoice_number }}",
+            "address": "={{ JSON.parse($json[\"query\"]).invoice_details.address }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "amount",
+              "displayName": "amount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "updated_at",
+              "displayName": "updated_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "invoice_number",
+              "displayName": "invoice_number",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "address",
+              "displayName": "address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.5,
+      "position": [
+        1860,
+        20
+      ],
+      "id": "1eb4c546-bf44-446b-bb09-bfa7012026cb",
+      "name": "Add Invoice Details tool",
+      "credentials": {
+        "postgres": {
+          "id": "smRmO2vJupEULz8e",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.1,
+      "position": [
+        1680,
+        20
+      ],
+      "id": "4753eab3-59ca-4864-9429-2d9c9435ee7d",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "inDluYDDq8MSiVOp",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{$('Prep Input Fields').item.json.query}} ",
+        "options": {
+          "systemMessage": "=You are an Invoice Management Assistant with access to a database of invoice information. Your primary responsibility is to help users retrieve and analyze invoice data based on their queries. You have access to the following invoice attributes in the database:\n\n- Invoice Number\n- Date Issued\n- Due Date\n- Total Amount\n- Payment Status (Paid/Unpaid)\n- Vendor Information\n- Line Items\n- Upload Date\n- Payment Date (if applicable)\n\nGuidelines for Response:\n\n1. QUERY INTERPRETATION\n- Always interpret user queries in the context of invoice management\n- Break down complex queries into specific database parameters\n- If a query is ambiguous, ask for clarification about specific parameters needed\n\n2. DATA RETRIEVAL\n- For date-based queries, always check both the issue date and upload date unless specifically mentioned\n- When handling status-based queries, consider:\n  - Unpaid: due_date < current_date AND payment_status = 'unpaid'\n  - Overdue: due_date < current_date AND payment_status = 'unpaid'\n  - Paid: payment_status = 'paid'\n\n3. OUTPUT FORMATTING\n- Present invoice information in a clear, structured format\n- Always include key fields: Invoice Number, Date, Amount, Status\n- For multiple invoices, provide a summary (total count, total amount)\n- Format currency values with appropriate currency symbols and decimal places\n\n4. SAFETY AND VALIDATION\n- Verify date ranges are logical and within system boundaries\n- Confirm numeric values are within reasonable ranges\n- Flag any unusual patterns or potential data inconsistencies\n\nDefault Response Structure:\n1. Confirmation of understanding the query\n2. Summary of results (count, total amount if applicable)\n3. Detailed list of matching invoices\n4. Any relevant alerts or notifications (e.g., overdue notices)\n\nSample Queries You Should Handle:\n- \"Show me all unpaid invoices\"\n- \"What invoices were uploaded yesterday?\"\n- \"List all overdue invoices from [Vendor Name]\"\n- \"What's the total amount of unpaid invoices?\"\n- \"Show invoices due this week\"\n\nFor any query you cannot fulfill or understand:\n1. Explain what part is unclear\n2. Request specific clarification\n3. Suggest alternative queries if appropriate\n\nRemember: When dealing with financial data, accuracy is paramount. If you're unsure about any aspect of the query, ask for clarification rather than making assumptions."
+        }
+      },
+      "id": "d477cb3f-219f-444e-a1d2-0c0dd3e95a27",
+      "name": "Intelligent Invoicing Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1200,
+        200
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Prep Output Fields": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Intelligent Invoicing Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prep Input Fields": {
+      "main": [
+        [
+          {
+            "node": "Intelligent Invoicing Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Prep Input Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Intelligent Invoicing Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Line Items From Postgres": {
+      "ai_tool": [
+        [
+          {
+            "node": "Intelligent Invoicing Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Invoices from Database": {
+      "ai_tool": [
+        [
+          {
+            "node": "Intelligent Invoicing Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetImages Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Invoice Details Processing Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Invoice Details tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Invoice Details Processing Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Invoice Details Processing Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Intelligent Invoicing Agent": {
+      "main": [
+        [
+          {
+            "node": "Prep Output Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "278df675-f8ae-4d54-828b-b6fb2627babf",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8799786899ddb3f920e103aeda5196604404e25c1f4a4fed3fdfc11bf5ca3976"
+  },
+  "id": "mfphdKn39Lyaseot",
+  "tags": [
+    {
+      "createdAt": "2025-01-21T09:10:11.752Z",
+      "updatedAt": "2025-01-21T09:10:11.752Z",
+      "id": "beWBeqiIQGJfGcJo",
+      "name": "studio-test"
+    }
+  ]
+}
