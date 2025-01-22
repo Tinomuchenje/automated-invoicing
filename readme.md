@@ -6,6 +6,8 @@ This README provides an overview and setup instructions for the "Intelligent Inv
 
 The "Intelligent Invoicing" workflow is designed to automate the processing of invoices. It integrates various services such as webhooks, database operations, and AI language models to handle invoice data, extract information, and interact with a Postgres database to store and retrieve invoice details and line items.
 
+![Intelligent Invoicing Workflow Diagram](/images/workflowpicture.png)
+
 ## Functionality
 
 - **Webhook Endpoint**: Accepts incoming POST requests with authentication and processes queries with user and session information.
