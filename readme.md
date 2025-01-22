@@ -8,6 +8,9 @@ The "Intelligent Invoicing" workflow is designed to automate the processing of i
 
 ![Intelligent Invoicing Workflow Diagram](/images/workflowpicture.png)
 
+
+Watch the demo [![Watch the demo video](/images/demo-thumbnail.jpg)](https://drive.google.com/file/d/1f7nTpdGAobaGhbfCs45dRpFxlWvLYoxD/view?usp=sharing)
+
 ## Functionality
 
 - **Webhook Endpoint**: Accepts incoming POST requests with authentication and processes queries with user and session information.
